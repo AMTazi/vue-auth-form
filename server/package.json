@@ -1,0 +1,17 @@
+{
+  "name": "json-sever",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "json-server --watch ./db.json --routes routes.json",
+    "start-auth": "node server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "json-server": "^0.15.1",
+    "jsonwebtoken": "^8.5.1"
+  }
+}

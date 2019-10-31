@@ -1,0 +1,19 @@
+{
+  "name": "vue-auth-form",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "front": "cd ./front && npm run serve",
+    "server": "cd ./server && npm run start-auth",
+    "all": "concurrently --raw \"npm run front\" \"npm run server\"",
+    "install-front": "cd ./front && npm i",
+    "install-server": "cd ./server && npm i",
+    "install-all": "npm install && concurrently --raw \"npm run install-front\" \"npm run install-server\""
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "concurrently": "^5.0.0"
+  }
+}
