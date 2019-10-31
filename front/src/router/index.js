@@ -53,16 +53,17 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   authorize(to, next);
   setTitle(to);
-  next();
 });
 
 const authorize = (to, next) => {
   const loggedIn = store.getters["auth/loggedIn"];
 
   if (to.meta.hasOwnProperty("requiresAuth") && to.meta.requiresAuth) {
-    !loggedIn && next({ name: "signin" });
+    !loggedIn ? next({ name: "signin" }) : next();
   } else if (to.meta.hasOwnProperty("guestOnly") && to.meta.guestOnly) {
-    loggedIn && next({ name: "dashboard" });
+    loggedIn ? next({ name: "dashboard" }) : next();
+  } else {
+    next();
   }
 };
 
