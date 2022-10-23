@@ -11,7 +11,6 @@ const userDb = JSON.parse(fs.readFileSync("./db/users.json", "UTF-8"));
 const casesDb = JSON.parse(fs.readFileSync("./db/cases.json", "UTF-8"));
 const nodesDb = JSON.parse(fs.readFileSync("./db/nodes.json", "UTF-8"));
 
-
 var nextId = 3;
 server.use(jsonServer.defaults());
 server.use(bodyParser.urlencoded({ extended: true }));
@@ -19,8 +18,6 @@ server.use(bodyParser.json());
 
 const SECRET_KEY = "123456789";
 const expiresIn = "1h";
-
-
 
 // Create a token from a payload
 function createToken(payload) {
@@ -38,20 +35,20 @@ function verifyToken(token) {
 function isAuthenticated({ email, password }) {
   return (
     userDb.users.findIndex(
-      user => user.email === email && user.password === password
+      (user) => user.email === email && user.password === password
     ) !== -1
   );
 }
 
 function userExists(email) {
-  return userDb.users.findIndex(user => user.email === email) !== -1;
+  return userDb.users.findIndex((user) => user.email === email) !== -1;
 }
 
 function addUser(name, email, password) {
-  userDb.users.push({id: nextId, name, email, password});
+  userDb.users.push({ id: nextId, name, email, password });
 
   fs.writeFileSync("./db/users.json", JSON.stringify(userDb));
-  nextId++
+  nextId++;
 }
 
 server.post("/auth/login", (req, res) => {
@@ -74,7 +71,7 @@ server.post("/auth/register", (req, res) => {
     res.status(status).json({ status, message });
     return;
   }
-  addUser(name, email, password)
+  addUser(name, email, password);
   const access_token = createToken({ email, password });
   res.status(200).json({ name, email, access_token });
 });
@@ -84,10 +81,21 @@ server.get("/dashboard/cases", (req, res) => {
 });
 
 server.get("/dashboard/cases/:caseId", (req, res) => {
-  const selectedNodes = (nodesDb?.nodes ?? []).filter(({caseId}) => req.params.caseId === caseId)
-  res.status(200).json({nodes: selectedNodes});
+  const selectedNodes = (nodesDb?.nodes ?? []).filter(
+    ({ caseId }) => req.params.caseId === caseId
+  );
+  res.status(200).json({ nodes: selectedNodes });
 });
 
+server.get("/dashboard/nodes/:nodeId", (req, res) => {
+  const selectedNode = (nodesDb?.nodes ?? []).find(
+    ({ id }) => req.params.nodeId === id
+  );
+  if (!selectedNode) {
+    res.status(404).json({ message: "Not found node" });
+  }
+  res.status(200).json({ node: selectedNode });
+});
 
 server.use(/^(?!\/auth).*$/, (req, res, next) => {
   logger.log(req.headers.authorization);
