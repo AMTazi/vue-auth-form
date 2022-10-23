@@ -1,16 +1,1 @@
-{
-  "users": [
-    {
-      "id": 1,
-      "name": "bruno",
-      "email": "bruno@email.com",
-      "password": "bruno31"
-    },
-    {
-      "id": 2,
-      "name": "nilson",
-      "email": "nilson@email.com",
-      "password": "nilson"
-    }
-  ]
-}
+{"users":[{"id":1,"name":"bruno","email":"bruno@email.com","password":"bruno31"},{"id":2,"name":"nilson","email":"nilson@email.com","password":"nilson"},{"id":3,"name":"sdfsdfsf","email":"sdfsdfdf@dff.dfdf","password":"dfddfdffdfdf"},{"id":3,"name":"Abdelmounaim Tazi","email":"email@email.com","password":"123456789"}]}

@@ -8,6 +8,10 @@ const server = jsonServer.create();
 const router = jsonServer.router("./db/products.json");
 
 const userDb = JSON.parse(fs.readFileSync("./db/users.json", "UTF-8"));
+const casesDb = JSON.parse(fs.readFileSync("./db/cases.json", "UTF-8"));
+const nodesDb = JSON.parse(fs.readFileSync("./db/nodes.json", "UTF-8"));
+
+
 var nextId = 3;
 server.use(jsonServer.defaults());
 server.use(bodyParser.urlencoded({ extended: true }));
@@ -15,6 +19,8 @@ server.use(bodyParser.json());
 
 const SECRET_KEY = "123456789";
 const expiresIn = "1h";
+
+
 
 // Create a token from a payload
 function createToken(payload) {
@@ -72,6 +78,16 @@ server.post("/auth/register", (req, res) => {
   const access_token = createToken({ email, password });
   res.status(200).json({ name, email, access_token });
 });
+
+server.get("/dashboard/cases", (req, res) => {
+  res.status(200).json(casesDb);
+});
+
+server.get("/dashboard/cases/:caseId", (req, res) => {
+  const selectedNodes = (nodesDb?.nodes ?? []).filter(({caseId}) => req.params.caseId === caseId)
+  res.status(200).json({nodes: selectedNodes});
+});
+
 
 server.use(/^(?!\/auth).*$/, (req, res, next) => {
   logger.log(req.headers.authorization);
